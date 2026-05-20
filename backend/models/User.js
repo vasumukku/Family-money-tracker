@@ -13,26 +13,22 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: [true, 'Password is required'],
-    minlength: [6, 'Password must be at least 6 characters'],
+    minlength: [4, 'Password must be at least 4 characters'],
   },
   name: {
     type: String,
-    default: 'Family Admin',
+    default: 'Family Member',
     trim: true,
   },
-  language: {
+  role: {
     type: String,
-    enum: ['en', 'te'],
-    default: 'en',
+    enum: ['admin', 'viewer'],
+    default: 'viewer',
   },
-  theme: {
-    type: String,
-    enum: ['light', 'dark'],
-    default: 'light',
-  },
-}, { 
-  timestamps: true 
-});
+  language: { type: String, enum: ['en', 'te'], default: 'en' },
+  theme: { type: String, enum: ['light', 'dark'], default: 'light' },
+  isActive: { type: Boolean, default: true },
+}, { timestamps: true });
 
 userSchema.methods.comparePassword = async function(candidatePassword) {
   return await bcrypt.compare(candidatePassword, this.password);
